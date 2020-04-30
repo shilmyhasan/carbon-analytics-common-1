@@ -1267,18 +1267,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <preparationGoals>clean install</preparationGoals>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -1415,13 +1403,6 @@
             </modules>
         </profile>
     </profiles>
-
-    <scm>
-        <url>https://github.com/wso2/carbon-analytics-common.git</url>
-        <developerConnection>scm:git:https://github.com/wso2/carbon-analytics-common.git</developerConnection>
-        <connection>scm:git:https://github.com/wso2/carbon-analytics-common.git</connection>
-        <tag>v5.2.24</tag>
-    </scm>
 
     <pluginRepositories>
         <pluginRepository>
