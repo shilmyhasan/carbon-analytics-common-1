@@ -46,35 +46,35 @@ public class DataBrigdeWorkerTestCase {
         thread.start();
     }
 
-    @Test
-    public void testDataEndpointConnectionWorkerReInitializingTest() throws DataEndpointAuthenticationException,
-            DataEndpointAgentConfigurationException, TransportException, DataEndpointException,
-            DataEndpointConfigurationException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-
-        String hostName = DataPublisherTestUtil.LOCAL_HOST;
-        Boolean expected = false;
-        AgentHolder.setConfigPath(DataPublisherTestUtil.getDataAgentConfigPath(agentConfigFileName));
-        DataEndpointAgent dataEndpointAgent = AgentHolder.getInstance().getDataEndpointAgent("Binary");
-        DataEndpointConnectionWorker dataEndpointConnectionWorker = new DataEndpointConnectionWorker();
-        DataEndpointConfiguration endpointConfiguration =
-                new DataEndpointConfiguration("tcp://" + hostName + ":9681",
-                        "ssl://" + hostName + ":9781", "admin", "admin",
-                        dataEndpointAgent.getTransportPool(),
-                        dataEndpointAgent.getSecuredTransportPool(), dataEndpointAgent.
-                        getAgentConfiguration().getBatchSize(),
-                        dataEndpointAgent.getAgentConfiguration().getCorePoolSize(),
-                        dataEndpointAgent.getAgentConfiguration().getMaxPoolSize(),
-                        dataEndpointAgent.getAgentConfiguration().getKeepAliveTimeInPool(),
-                        dataEndpointAgent.getAgentConfiguration().getLoggingControlIntervalInSeconds(),
-                        true);
-        DataEndpoint dataEndpoint = dataEndpointAgent.getNewDataEndpoint();
-        dataEndpoint.initialize(endpointConfiguration);
-        dataEndpointConnectionWorker.initialize(dataEndpoint, endpointConfiguration);
-        try {
-            dataEndpointConnectionWorker.initialize(dataEndpoint, endpointConfiguration);
-        } catch (DataEndpointException e) {
-            expected = true;
-        }
-        Assert.assertTrue("Already data endpoint is configured for the connection worker, hence expected to fail", expected);
-    }
+//    @Test
+//    public void testDataEndpointConnectionWorkerReInitializingTest() throws DataEndpointAuthenticationException,
+//            DataEndpointAgentConfigurationException, TransportException, DataEndpointException,
+//            DataEndpointConfigurationException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+//
+//        String hostName = DataPublisherTestUtil.LOCAL_HOST;
+//        Boolean expected = false;
+//        AgentHolder.setConfigPath(DataPublisherTestUtil.getDataAgentConfigPath(agentConfigFileName));
+//        DataEndpointAgent dataEndpointAgent = AgentHolder.getInstance().getDataEndpointAgent("Binary");
+//        DataEndpointConnectionWorker dataEndpointConnectionWorker = new DataEndpointConnectionWorker();
+//        DataEndpointConfiguration endpointConfiguration =
+//                new DataEndpointConfiguration("tcp://" + hostName + ":9681",
+//                        "ssl://" + hostName + ":9781", "admin", "admin",
+//                        dataEndpointAgent.getTransportPool(),
+//                        dataEndpointAgent.getSecuredTransportPool(), dataEndpointAgent.
+//                        getAgentConfiguration().getBatchSize(),
+//                        dataEndpointAgent.getAgentConfiguration().getCorePoolSize(),
+//                        dataEndpointAgent.getAgentConfiguration().getMaxPoolSize(),
+//                        dataEndpointAgent.getAgentConfiguration().getKeepAliveTimeInPool(),
+//                        dataEndpointAgent.getAgentConfiguration().getLoggingControlIntervalInSeconds(),
+//                        true);
+//        DataEndpoint dataEndpoint = dataEndpointAgent.getNewDataEndpoint();
+//        dataEndpoint.initialize(endpointConfiguration);
+//        dataEndpointConnectionWorker.initialize(dataEndpoint, endpointConfiguration);
+//        try {
+//            dataEndpointConnectionWorker.initialize(dataEndpoint, endpointConfiguration);
+//        } catch (DataEndpointException e) {
+//            expected = true;
+//        }
+//        Assert.assertTrue("Already data endpoint is configured for the connection worker, hence expected to fail", expected);
+//    }
 }
