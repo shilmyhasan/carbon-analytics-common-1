@@ -26,9 +26,11 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
-import org.wso2.carbon.core.ServerStartupObserver;
 import org.wso2.carbon.databridge.core.DataBridgeReceiverService;
+import org.wso2.carbon.databridge.core.exception.DataBridgeException;
 import org.wso2.carbon.databridge.receiver.binary.conf.BinaryDataReceiverConfiguration;
+
+import java.io.IOException;
 
 @Component(
         name = "binaryDataReceiver.component",
@@ -58,10 +60,13 @@ public class BinaryDataReceiverServiceComponent {
         }
         binaryDataReceiver = new BinaryDataReceiver(new BinaryDataReceiverConfiguration(dataBridgeReceiverService
                 .getInitialConfig()), dataBridgeReceiverService);
-                
-        context.getBundleContext().registerService(ServerStartupObserver.class.getName(), binaryDataReceiver, null);
-
-        log.info("Binary Data Receiver server activated");
+        try {
+            binaryDataReceiver.start();
+        } catch (IOException e) {
+            log.error("Error while starting binary data receiver ", e);
+        } catch (DataBridgeException e) {
+            log.error("Error while starting binary data receiver ", e);
+        }
     }
 
     @Deactivate
