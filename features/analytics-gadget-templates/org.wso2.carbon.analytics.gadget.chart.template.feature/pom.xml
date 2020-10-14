@@ -17,7 +17,7 @@
     <parent>
         <artifactId>analytics-gadget-template-feature</artifactId>
         <groupId>org.wso2.carbon.analytics-common</groupId>
-        <version>5.2.24.1-SNAPSHOT</version>
+        <version>5.2.24.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -48,7 +48,7 @@
                         <phase>process-resources</phase>
                         <configuration>
                             <target>
-                                <ant antfile="build.xml" target="copy-artifacts"/>
+                                <ant antfile="build.xml" target="copy-artifacts" />
                             </target>
                         </configuration>
                         <goals>
