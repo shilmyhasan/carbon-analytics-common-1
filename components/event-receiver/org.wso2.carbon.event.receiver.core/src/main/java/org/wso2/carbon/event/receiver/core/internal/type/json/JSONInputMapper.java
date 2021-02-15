@@ -14,6 +14,8 @@
  */
 package org.wso2.carbon.event.receiver.core.internal.type.json;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
@@ -36,6 +38,7 @@ import org.wso2.carbon.event.receiver.core.internal.util.EventReceiverUtil;
 import org.wso2.carbon.event.receiver.core.internal.util.helper.EventReceiverConfigurationHelper;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -215,7 +218,8 @@ public class JSONInputMapper implements InputMapper {
 
                 if (noMetaData > 0) {
                     JsonPath jsonPath = JsonPath.compile("$." + EventReceiverConstants.EVENT_PARENT_TAG + "." + EventReceiverConstants.EVENT_META_TAG);
-                    Map<Object, Object> eventMap = jsonPath.read(jsonString);
+                    Map<Object, Object> eventMap = parseEventToMap(jsonPath, jsonString);
+
                     if (eventMap == null) {
                         throw new EventReceiverProcessingException("Missing event MetaData attributes, Event does not match with the stream : " + this.eventReceiverConfiguration.getToStreamName() + ":" + eventReceiverConfiguration.getToStreamVersion());
                     } else {
@@ -235,7 +239,8 @@ public class JSONInputMapper implements InputMapper {
 
                 if (noCorrelationData > 0) {
                     JsonPath jsonPath = JsonPath.compile("$." + EventReceiverConstants.EVENT_PARENT_TAG + "." + EventReceiverConstants.EVENT_CORRELATION_TAG);
-                    Map<Object, Object> eventMap = jsonPath.read(jsonString);
+                    Map<Object, Object> eventMap = parseEventToMap(jsonPath, jsonString);
+
                     if (eventMap == null) {
                         throw new EventReceiverProcessingException("Missing CorrelationData attributes, Event does not match with the stream : " + this.eventReceiverConfiguration.getToStreamName() + ":" + eventReceiverConfiguration.getToStreamVersion());
                     } else {
@@ -254,7 +259,8 @@ public class JSONInputMapper implements InputMapper {
                 }
                 if (noPayloadData > 0) {
                     JsonPath jsonPath = JsonPath.compile("$." + EventReceiverConstants.EVENT_PARENT_TAG + "." + EventReceiverConstants.EVENT_PAYLOAD_TAG);
-                    Map<Object, Object> eventMap = jsonPath.read(jsonString);
+                    Map<Object, Object> eventMap = parseEventToMap(jsonPath, jsonString);
+
                     if (eventMap == null) {
                         throw new EventReceiverProcessingException("Missing PayloadData attributes, Event does not match with the stream : " + this.eventReceiverConfiguration.getToStreamName() + ":" + eventReceiverConfiguration.getToStreamVersion());
                     } else {
@@ -370,4 +376,18 @@ public class JSONInputMapper implements InputMapper {
         return null;
     }
 
+    private Map<Object, Object> parseEventToMap(JsonPath jsonPath, String jsonString) {
+        Map<Object, Object> eventMap = null;
+        Object eventObj = jsonPath.read(jsonString);
+
+        if(eventObj != null) {
+            if (eventObj instanceof JsonObject) {
+                eventMap = new Gson().fromJson(eventObj.toString(), LinkedHashMap.class);
+            } else if (eventObj instanceof Map) {
+                eventMap = (Map<Object, Object>) eventObj;
+            }
+        }
+
+        return eventMap;
+    }
 }
