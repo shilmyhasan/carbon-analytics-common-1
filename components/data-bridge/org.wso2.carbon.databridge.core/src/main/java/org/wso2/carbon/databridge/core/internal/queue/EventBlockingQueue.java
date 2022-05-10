@@ -27,7 +27,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * This class provides the blocking implementation based on the size of event composite in the queue. Also it make sure
+ * This class provides the blocking implementation based on the size of event composite in the queue. Also it makes sure
  * the queue doesn't grow beyond the determined size.
  */
 public class EventBlockingQueue extends ArrayBlockingQueue<EventComposite> {
